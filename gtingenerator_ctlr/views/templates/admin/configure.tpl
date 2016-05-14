@@ -54,7 +54,7 @@
 
 				<p class="text-center">
 					<strong>
-						<a href="http://www.prestashop.com" target="_blank" title="Lorem ipsum dolor">
+						<a href="#" target="_blank" title="Lorem ipsum dolor">
 							{l s='Lorem ipsum dolor' mod='gtingenerator_ctlr' }
 						</a>
 					</strong>

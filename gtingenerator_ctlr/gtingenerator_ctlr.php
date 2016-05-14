@@ -31,7 +31,6 @@ if (!defined('_PS_VERSION_')) {
 class Gtingenerator_ctlr extends Module
 {
     protected $config_form = false;
-
     public function __construct()
     {
         $this->name = 'gtingenerator_ctlr';
@@ -50,7 +49,6 @@ class Gtingenerator_ctlr extends Module
         $this->displayName = $this->l('GTIN Generator');
         $this->description = $this->l('Generate automatic gtin number for your product');
     }
-
     /**
      * Don't forget to create update methods if needed:
      * http://doc.prestashop.com/display/PS16/Enabling+the+Auto-Update
@@ -66,14 +64,12 @@ class Gtingenerator_ctlr extends Module
             $this->registerHook('actionProductSave') &&
             $this->registerHook('actionProductUpdate');
     }
-
     public function uninstall()
     {
         Configuration::deleteByName('GTINGENERATOR_CTLR_LIVE_MODE');
 
         return parent::uninstall();
     }
-
     /**
      * Load the configuration form
      */
@@ -92,7 +88,6 @@ class Gtingenerator_ctlr extends Module
 
         return $output;
     }
-
     /**
      * Create the form that will be displayed in the configuration of your module.
      */
@@ -120,7 +115,6 @@ class Gtingenerator_ctlr extends Module
 
         return $helper->generateForm(array($this->getConfigForm()));
     }
-
     /**
      * Create the structure of your form.
      */
@@ -172,7 +166,6 @@ class Gtingenerator_ctlr extends Module
             ),
         );
     }
-
     /**
      * Set values for the inputs.
      */
@@ -184,7 +177,6 @@ class Gtingenerator_ctlr extends Module
             'GTINGENERATOR_CTLR_ACCOUNT_PASSWORD' => Configuration::get('GTINGENERATOR_CTLR_ACCOUNT_PASSWORD', null),
         );
     }
-
     /**
      * Save form data.
      */
@@ -196,7 +188,6 @@ class Gtingenerator_ctlr extends Module
             Configuration::updateValue($key, Tools::getValue($key));
         }
     }
-
     /**
     * Add the CSS & JavaScript files you want to be loaded in the BO.
     */
@@ -207,7 +198,6 @@ class Gtingenerator_ctlr extends Module
             $this->context->controller->addCSS($this->_path.'views/css/back.css');
         }
     }
-
     /**
      * Add the CSS & JavaScript files you want to be added on the FO.
      */
@@ -219,36 +209,27 @@ class Gtingenerator_ctlr extends Module
 
     public function hookActionProductAdd($params)
     {
-        /*$id = $params['id_product'];
-        echo $this->makeEanUpcProduct($id);
-        die();*/
+        $id = $params['id_product'];
+        static::makeEanUpcProduct($id);
     }
     public function hookActionProductSave($params)
     {
         $id = $params['id_product'];
-        if (!$this->eanupc) {
-            $product = new Product($id);
-            $product->ean13 = self::gtin_make(@$product->ean13, 13);
-            $product->upc = self::gtin_make(@$product->upc);
-            //$this->eanupc = $product->save();
-        }
-        var_dump($product);die();
+        static::makeEanUpcProduct($id);
     }
 
     public function hookActionProductUpdate($params)
     {
-        /*$id = $params['id_product'];
-        $this->makeEanUpcProduct($id);*/
+        $id = $params['id_product'];
+        static::makeEanUpcProduct($id);
     }
 
-    protected $eanupc = null;
-    private function makeEanUpcProduct($id){
-        if (!$this->eanupc) {
-            $product = new Product($id);
-            $product->ean13 = self::gtin_make(@$product->ean13, 13);
-            $product->upc = self::gtin_make(@$product->upc);
-            $this->eanupc = $product->save();
-        }
+    private static function makeEanUpcProduct($id){
+        $product = new Product($id);
+        Db::getInstance()->update('stock', array(
+            'ean13'     => self::gtin_make(@$product->ean13, 13),
+            'upc'        => self::gtin_make(@$product->upc),
+        ), 'id_product = '.(int)$id);
     }
     private static function gtin_make($c = "", $l = "12"){
         $start = $l == 12 ? "100000000000" : "1000000000000";
