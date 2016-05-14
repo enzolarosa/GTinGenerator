@@ -226,10 +226,14 @@ class Gtingenerator_ctlr extends Module
 
     private static function makeEanUpcProduct($id){
         $product = new Product($id);
-        Db::getInstance()->update('stock', array(
-            'ean13'     => self::gtin_make(@$product->ean13, 13),
-            'upc'        => self::gtin_make(@$product->upc),
+        $ean = static::gtin_make(@$product->ean13, 13);
+        $upc = static::gtin_make(@$product->upc);
+        //echo "Ean $ean UPC $upc";die();
+        Db::getInstance()->update('product', array(
+            'ean13'     => pSQL($ean),
+            'upc'        => pSQL($upc),
         ), 'id_product = '.(int)$id);
+
     }
     private static function gtin_make($c = "", $l = "12"){
         $start = $l == 12 ? "100000000000" : "1000000000000";
@@ -239,35 +243,31 @@ class Gtingenerator_ctlr extends Module
         $len = strlen($base);
         if ($len >= $l){
             $base = substr($base, 0,strlen($base)-1);
-            return self::gtin_make($base,$l);
+            return static::gtin_make($base,$l);
         }
-        $base[$l-1] = self::gtin_check($base,$l);
-        return (string) $base;
+        $d = static::gtin_check($base,$l);
+        //echo "$d<br />";
+        $base[$l-1] = $d;
+        return $base;
 
     }
     private static function gtin_check($str,$l){
         $len = strlen($str);
         if ($len >= $l){
             $str = substr($str, 0,$len-1);
-            return self::gtin_check($str);
+            return static::gtin_check($str);
         }
         $sum = 0;
         for ($i = 0; $i < $len ;$i++){
             if ($i % 2 == 0){
-                //echo "POSIZIONE ".($i+1).": {$str[$i]} * 1 = {$str[$i]}";
                 $sum += (int) $str[$i];
-                //echo " | Nuovo valore della somma $sum<br />";
 
             }else{
-                //echo "POSIZIONE ".($i+1).": {$str[$i]} * 3 = ".$str[$i]*3;
                 $sum += (int) $str[$i] * 3;
-                //echo " | Nuovo valore della somma $sum<br />";
             }
         }
-        $r = self::arrotonda($sum,10);
-        //$dif = $r-$sum;
-        //echo "Il valore della somma &egrave; $sum il valore più vicino &egrave; $r la sua differenza è uguale a $dif<br />";
-        return (string) $r - $sum;
+        $r = static::arrotonda($sum,10);
+        return $r - $sum;
     }
     private static function arrotonda($number, $significance = 1){
         return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;

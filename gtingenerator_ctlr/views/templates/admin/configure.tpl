@@ -22,7 +22,6 @@
 *  @license   http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 *}
-
 <div class="panel">
 	<div class="row moduleconfig-header">
 		<div class="col-xs-5 text-right">
@@ -33,9 +32,7 @@
 			<h4>{l s='Lorem ipsum dolor' mod='gtingenerator_ctlr'}</h4>
 		</div>
 	</div>
-
 	<hr />
-
 	<div class="moduleconfig-content">
 		<div class="row">
 			<div class="col-xs-12">
@@ -49,9 +46,7 @@
 						<li>{l s='Lorem ipsum dolor sit amet' mod='gtingenerator_ctlr'}</li>
 					</ul>
 				</p>
-
 				<br />
-
 				<p class="text-center">
 					<strong>
 						<a href="#" target="_blank" title="Lorem ipsum dolor">
