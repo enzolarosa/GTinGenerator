@@ -205,6 +205,7 @@ class Gtingenerator_ctlr extends Module
     {
         $this->context->controller->addJS($this->_path.'/views/js/front.js');
         $this->context->controller->addCSS($this->_path.'/views/css/front.css');
+        //static::createEanUpcProduct();
     }
 
     public function hookActionProductAdd($params)
@@ -217,18 +218,21 @@ class Gtingenerator_ctlr extends Module
         $id = $params['id_product'];
         static::makeEanUpcProduct($id);
     }
-
     public function hookActionProductUpdate($params)
     {
         $id = $params['id_product'];
         static::makeEanUpcProduct($id);
     }
 
-    private static function makeEanUpcProduct($id){
+    private static function makeEanUpcProduct($id,$new = 0){
         $product = new Product($id);
+
+        $product->ean13 = !$new ? $product->ean13 : "";
+        $product->upc = !$new ? $product->upc : "";
+
         $ean = static::gtin_make(@$product->ean13, 13);
         $upc = static::gtin_make(@$product->upc);
-        //echo "Ean $ean UPC $upc";die();
+
         Db::getInstance()->update('product', array(
             'ean13'     => pSQL($ean),
             'upc'        => pSQL($upc),
@@ -246,7 +250,6 @@ class Gtingenerator_ctlr extends Module
             return static::gtin_make($base,$l);
         }
         $d = static::gtin_check($base,$l);
-        //echo "$d<br />";
         $base[$l-1] = $d;
         return $base;
 
@@ -272,4 +275,16 @@ class Gtingenerator_ctlr extends Module
     private static function arrotonda($number, $significance = 1){
         return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;
     }
+    private static function createEanUpcProduct(){
+        if (!$res = Db::getInstance()->executeS('
+            SELECT *
+            FROM `'._DB_PREFIX_.'product`')
+        ) {
+            return false;
+        }
+        foreach ($res as $product) {
+            static::makeEanUpcProduct($product['id_product'],1);
+        }
+    }
+
 }
