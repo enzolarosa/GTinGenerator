@@ -240,8 +240,11 @@ class Gtingenerator_ctlr extends Module
 
     }
     private static function gtin_make($c = "", $l = "12"){
-        $start = $l == 12 ? "100000000000" : "1000000000000";
-        $stop  = $l == 12 ? "999999999999" : "9999999999999";
+        $country = include __DIR__."/setting/country-code.php";
+        $lang = "it";
+        $code = $country[$lang];
+        $start = $l == 12 ? $code['init']."000000000" : $code['init']."0000000000";
+        $stop  = $l == 12 ? $code['stop']."999999999" : $code['stop']."9999999999";
 
         $base = $c == "" ? rand($start,$stop) : $c;
         $len = strlen($base);
