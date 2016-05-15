@@ -24,33 +24,35 @@
 *}
 <div class="panel">
 	<div class="row moduleconfig-header">
-		<div class="col-xs-5 text-right">
-			<img src="{$module_dir|escape:'html':'UTF-8'}views/img/logo.jpg" />
+		<div class="col-xs-2 text-right">
+			<img src="{$module_dir|escape:'html':'UTF-8'}views/img/ctlr-logo.png" />
 		</div>
 		<div class="col-xs-7 text-left">
-			<h2>{l s='Lorem' mod='gtingenerator_ctlr'}</h2>
-			<h4>{l s='Lorem ipsum dolor' mod='gtingenerator_ctlr'}</h4>
+			<h2>{l s='GTin Generator' mod='gtingenerator_ctlr'}</h2>
+			<h4>{l s='Automatically creates the code EAN13 and UPC of each product, taking into account your store nationwide' mod='gtingenerator_ctlr'}</h4>
 		</div>
 	</div>
 	<hr />
 	<div class="moduleconfig-content">
 		<div class="row">
 			<div class="col-xs-12">
-				<p>
-					<h4>{l s='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor' mod='gtingenerator_ctlr'}</h4>
-					<ul class="ul-spaced">
-						<li><strong>{l s='Lorem ipsum dolor sit amet' mod='gtingenerator_ctlr'}</strong></li>
-						<li>{l s='Lorem ipsum dolor sit amet' mod='gtingenerator_ctlr'}</li>
-						<li>{l s='Lorem ipsum dolor sit amet' mod='gtingenerator_ctlr'}</li>
-						<li>{l s='Lorem ipsum dolor sit amet' mod='gtingenerator_ctlr'}</li>
-						<li>{l s='Lorem ipsum dolor sit amet' mod='gtingenerator_ctlr'}</li>
-					</ul>
+				<p class="text-center">
+					<h4>{l s='Generates for all Products' mod='gtingenerator_ctlr'}</h4>
+					<form action="#" method="post">
+						<div class="form-group">
+                            <label>{l s='Clean & Generates' mod='gtingenerator_ctlr'}</label>
+                            <input class="form-control" type="checkbox" name="new" value="1" />
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-success" type="submit">{l s='Generate' mod='gtingenerator_ctlr'}</button>
+                        </div>
+					</form>
 				</p>
 				<br />
 				<p class="text-center">
 					<strong>
-						<a href="#" target="_blank" title="Lorem ipsum dolor">
-							{l s='Lorem ipsum dolor' mod='gtingenerator_ctlr' }
+						<a href="http://www.ctlr.it" target="_blank" title="ctlr - Sviluppo Software Personalizzato">
+							{l s='ctlr - Sviluppo Software Personalizzato' mod='gtingenerator_ctlr' }
 						</a>
 					</strong>
 				</p>

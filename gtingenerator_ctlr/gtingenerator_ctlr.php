@@ -186,6 +186,10 @@ class Gtingenerator_ctlr extends Module
 
         foreach (array_keys($form_values) as $key) {
             Configuration::updateValue($key, Tools::getValue($key));
+            if ($key == "new"){
+                $new = Tools::getValue($key);
+                static::createEanUpcProduct($new);
+            }
         }
     }
     /**
@@ -207,7 +211,6 @@ class Gtingenerator_ctlr extends Module
         $this->context->controller->addCSS($this->_path.'/views/css/front.css');
         //static::createEanUpcProduct();
     }
-
     public function hookActionProductAdd($params)
     {
         $id = $params['id_product'];
@@ -255,7 +258,6 @@ class Gtingenerator_ctlr extends Module
         $d = static::gtin_check($base,$l);
         $base[$l-1] = $d;
         return $base;
-
     }
     private static function gtin_check($str,$l){
         $len = strlen($str);
@@ -278,7 +280,7 @@ class Gtingenerator_ctlr extends Module
     private static function arrotonda($number, $significance = 1){
         return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;
     }
-    private static function createEanUpcProduct(){
+    private static function createEanUpcProduct($new=0){
         if (!$res = Db::getInstance()->executeS('
             SELECT *
             FROM `'._DB_PREFIX_.'product`')
@@ -286,7 +288,7 @@ class Gtingenerator_ctlr extends Module
             return false;
         }
         foreach ($res as $product) {
-            static::makeEanUpcProduct($product['id_product'],1);
+            static::makeEanUpcProduct($product['id_product'],$new);
         }
     }
 

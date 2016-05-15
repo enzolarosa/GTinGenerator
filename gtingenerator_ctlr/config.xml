@@ -3,7 +3,7 @@
 	<name>gtingenerator_ctlr</name>
 	<displayName><![CDATA[GTIN Generator]]></displayName>
 	<version><![CDATA[1.0.0]]></version>
-	<description><![CDATA[Generate automatic gtin number for your product]]></description>
+	<description><![CDATA[Automatically creates the code EAN13 and UPC of each product, taking into account your store nationwide]]></description>
 	<author><![CDATA[CTLR di La Rosa Vincenzo]]></author>
 	<tab><![CDATA[others]]></tab>
 	<is_configurable>1</is_configurable>
